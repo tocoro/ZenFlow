@@ -1,0 +1,5 @@
+{
+  "name": "ZenFlow",
+  "description": "A node-based task gamification tool. Visualize daily to-dos as a network, break them down with AI, and clear the board to achieve the ultimate goal: doing nothing.",
+  "requestFramePermissions": []
+}
