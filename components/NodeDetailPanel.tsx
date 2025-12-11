@@ -33,6 +33,13 @@ export const NodeDetailPanel: React.FC<NodeDetailPanelProps> = ({
   const [isDragging, setIsDragging] = useState(false);
   const dragStartRef = useRef<{ mouseX: number; mouseY: number; startX: number; startY: number } | null>(null);
 
+  // Update position when initial props change (e.g. node selection change)
+  // We use a ref to track the last node ID to avoid resetting position just on re-renders,
+  // but if the parent *intends* to move it (by changing initialX/Y significantly along with ID), we update.
+  useEffect(() => {
+    setPosition({ x: initialX, y: initialY });
+  }, [initialX, initialY]); // Dependency on coordinates allows the panel to move if the node moves in the background or new node selected.
+
   const handleMouseDown = (e: React.MouseEvent) => {
     // Only drag on left click
     if (e.button !== 0) return;
@@ -86,8 +93,8 @@ export const NodeDetailPanel: React.FC<NodeDetailPanelProps> = ({
 
   return (
     <div 
-        className="fixed top-0 left-0 w-80 bg-surface/90 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl z-40 p-5 animate-in fade-in zoom-in-95 duration-200"
-        style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
+        className="fixed w-80 bg-surface/90 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl z-40 p-5 animate-in fade-in zoom-in-95 duration-200"
+        style={{ left: position.x, top: position.y }}
         onMouseDown={(e) => e.stopPropagation()} // Prevent panning when clicking anywhere on the panel
     >
       
